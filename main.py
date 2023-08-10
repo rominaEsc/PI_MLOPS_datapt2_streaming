@@ -55,7 +55,7 @@ def peliculas_duracion( pelicula: str ):
 
 # 3. función franquicia
 
-@app.get('/franquicia/{franquicia}')
+@app.get('/get_director/{nombre_director}')
 def franquicia(franquicia:str):
     '''Se ingresa la franquicia, retornando la cantidad de peliculas, ganancia total y promedio'''
     franquicia = franquicia.title().strip()
