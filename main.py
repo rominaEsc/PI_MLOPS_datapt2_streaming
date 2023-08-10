@@ -20,8 +20,9 @@ movies_production_companies = pd.read_csv("data/movies_production_companies.csv"
 
 @app.get('/peliculas_idioma/{idioma}')
 def peliculas_idioma(idioma:str):
-    respuesta = (original_language.original_language ==idioma).sum()
+    respuesta = int(original_language.original_language ==idioma).sum()
     return {'idioma':idioma, 'cantidad':respuesta}
+    
 
 
 # 2. función peliculas_duracion
@@ -30,7 +31,7 @@ def peliculas_idioma(idioma:str):
 def peliculas_duracion( pelicula: str ): 
     '''  Se ingresa una pelicula. Debe devolver la duracion y el año..
     '''
-    passelicula = pelicula.title().strip()
+    pelicula = pelicula.title().strip()
     pelis = movies[['title','runtime','release_year']]
     mensaje = "La pelicula {} no se encuentra en la base de datos".format(pelicula)
 
@@ -58,13 +59,13 @@ def peliculas_duracion( pelicula: str ):
 def franquicia(franquicia:str):
     '''Se ingresa la franquicia, retornando la cantidad de peliculas, ganancia total y promedio'''
     franquicia = franquicia.title().strip()
-    cantidad = (collections.name_collection == franquicia).sum()
+    cantidad = int(collections.name_collection == franquicia).sum()
 
     if cantidad == 0:
         mensaje = f'La franquicia "{franquicia}" no se encuentra en nuestra base de datos. Intente nuevamente.'
         out = {mensaje}
     else:
-        ganancia_total = collections.revenue[collections.name_collection == franquicia].sum()
+        ganancia_total = int(collections.revenue[collections.name_collection == franquicia].sum())
         ganancia_promedio = ganancia_total/cantidad
         out = {'franquicia':franquicia, 'cantidad':cantidad, 'ganancia_total':ganancia_total, 'ganancia_promedio':ganancia_promedio}
 
@@ -76,7 +77,8 @@ def franquicia(franquicia:str):
 @app.get('/peliculas_pais/{pais}')
 def peliculas_pais(pais:str):
     '''Ingresas el pais, retornando la cantidad de peliculas producidas en el mismo'''
-    cantidad =  production_countries.id_production_countries[production_countries.id_production_countries == pais].count()
+    pais = pais.upper()
+    cantidad =  int(production_countries.id_production_countries[production_countries.id_production_countries == pais].count())
     
     return {'pais':pais, 'cantidad':cantidad}
 
@@ -86,17 +88,20 @@ def peliculas_pais(pais:str):
 @app.get('/productoras_exitosas/{productora}')
 def productoras_exitosas(productora:str):
     '''Ingresas la productora, entregandote el revunue total y la cantidad de peliculas que realizo '''
+    productora = productora.title().strip()
 
     df = movies_production_companies[movies_production_companies.name_production_companies == productora]
 
-    revenue_total = df.revenue.sum()
-    cantidad =df.revenue.count()
+    revenue_total = int(df.revenue.sum())
+    cantidad = int(df.revenue.count())
 
     return {'productora':productora, 'revenue_total': revenue_total,'cantidad':cantidad}
 
 
+
 # 6. funcion get_director
 
+@app.get('/get_director/{nombre_director}')
 def get_director( nombre_director ): 
     '''
     Se ingresa el nombre de un director que se encuentre dentro de un dataset debiendo devolver el éxito del mismo medido a través del retorno. 
