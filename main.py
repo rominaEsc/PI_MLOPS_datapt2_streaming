@@ -149,3 +149,20 @@ def get_director( nombre_director ):
             'revenue_pelicula':revenue_peliculas}
 
     return data
+
+
+#  -----------------------------
+
+
+# ML
+# @app.get('/recomendacion/{titulo}')
+def recomendacion(titulo:str):
+    '''Ingresas un nombre de pelicula y te recomienda las similares en una lista'''
+    if df['title'].str.contains(titulo).any():
+        titulo = titulo.title().strip()
+        lista = (results[titulo])
+        data = {'titulo':titulo , 'lista recomendada': lista}
+    else:
+        mensaje = "La pelicula {} no se encuentra en la base de datos.".format(titulo)
+        data = {'actor':[mensaje] }    
+    return data
