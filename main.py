@@ -14,7 +14,6 @@ collections = pd.read_csv('data/collections.csv',low_memory=False)
 directors = pd.read_csv("data/directors.csv", sep=",")
 production_countries = pd.read_csv("data/movies_production_countries.csv", sep=",")
 movies_production_companies = pd.read_csv("data/movies_production_companies.csv", sep=",")
-df = pd.read_csv("data/df.csv", sep=",")
 
 
 # 1. función peliculas_idioma
@@ -171,7 +170,6 @@ cosine_similarities = linear_kernel(tfidf_matrix, tfidf_matrix)
 n = 5
 
 results = {} 
-
 for idx, row in df.iterrows():
     # guardamos los indices similares basados en la similitud coseno. Los ordenamos en modo ascendente, siendo 0 nada de similitud y 1 total
     similar_indices = cosine_similarities[idx].argsort()[:-n-2:-1] 
@@ -179,14 +177,18 @@ for idx, row in df.iterrows():
     similar_items = [(f"{df.loc[i, 'title']}") for i in similar_indices]
     results[f"{row['title']}"] = similar_items[1:]
 
+
 @app.get('/recomendacion/{titulo}')
+
 def recomendacion(titulo:str):
     '''Ingresas un nombre de pelicula y te recomienda las similares en una lista'''
+    titulo = titulo.title().strip()
+
     if df['title'].str.contains(titulo).any():
         titulo = titulo.title().strip()
         lista = (results[titulo])
         data = {'titulo':titulo , 'lista recomendada': lista}
     else:
         mensaje = "La pelicula {} no se encuentra en la base de datos.".format(titulo)
-        data = {mensaje}    
+        data = {'actor':[mensaje] }    
     return data
