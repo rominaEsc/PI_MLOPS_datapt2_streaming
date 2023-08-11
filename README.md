@@ -1,7 +1,5 @@
 # PI_MLOPS_datapt2_streaming
 
-# PI_01_MLOps_Henry
-
 # <h1 align=center> **PROYECTO INDIVIDUAL Nº1** </h1>
 # <p align=center><img src=https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png><p>
 
@@ -33,11 +31,7 @@ A partir de los dataset que se encuentran en https://drive.google.com/drive/fold
 6- Algunos campos, como belongs_to_collection, production_companies y otros (ver diccionario de datos) están anidados, esto es o bien tienen un diccionario o una lista como valores en cada fila, ¡deberán desanidarlos y unirlos al dataset de nuevo para hacer alguna de las consultas de la API! O bien buscar la manera de acceder a esos datos sin desanidarlos.. (ver 3_creacion_de_tablas.ipynb)
 
 
-_<< Estas transformaciones y otras se realizaron los archivos:>>_
-
-- 1_etl_movies.ipynb
-- 2_etl_credits.ipynb, 
-...
+_<< Estas transformaciones y otras se realizaron los archivos: 1 a 4 >>_
 
 Estos crean, en la carpeta data, los datasets a utilizar en este proyecto_ 
 
@@ -63,7 +57,7 @@ Debemos crear 6 funciones para los endpoints que se consumirán en la API.
 
 
 
-_<< Estas funciones se realizaron y probaron en el archivo 6_funciones.ipynb>>_
+_<< Estas funciones se realizaron y probaron en el archivo 6>>_
 
 ### Deployment
 Realizar el deployment para poder consumir la API
@@ -73,13 +67,14 @@ _<< Las consultas a la API pueden realizarse en el siguiente link: https://pi-ml
 ### Análisis exploratorio de los datos
 Se realizo un analisis de las palabras que se presentaban con mayor frecuencia en el dataset. 
   
-_<< Esto puede verse en el archivo 4_eda.ipynb >>_
+_<< Esto puede verse en el archivo 5 >>_
 
 
 ### Sistema de recomendación
 El sistema consiste en recomendar películas a los usuarios basándose en películas similares, por lo que se debe encontrar la similitud de puntuación entre esa película y el resto de películas, se ordenarán según el score de similaridad y devolverá una lista de Python con 5 valores, cada uno siendo el string del nombre de las películas con mayor puntaje, en orden descendente. Debe ser deployado como una función adicional de la API anterior y debe llamarse:
 def recomendacion( titulo ): Se ingresa el nombre de una película y te recomienda las similares en una lista de 5 valores.
-_ver 5_ML.ipynb_
+
+_ver archivos 7 y 8_
 
 ## Video: 
 Realizar un video mostrando el resultado de las consultas propuestas y de tu modelo de ML entrenado!
