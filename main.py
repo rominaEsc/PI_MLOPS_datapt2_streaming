@@ -26,3 +26,52 @@ def peliculas_idioma(idioma:str):
 
     return {'idioma':idioma, 'cantidad':respuesta}
 
+# --------------------------------
+
+# 2. función peliculas_duracion
+
+@app.get('/peliculas_duracion/{pelicula}')
+def peliculas_duracion( pelicula: str ): 
+    '''  Se ingresa una pelicula. Debe devolver la duracion y el año..
+    '''
+    pelicula = pelicula.title().strip()
+    pelis = movies[['title','runtime','release_year']]
+    mensaje = "La pelicula {} no se encuentra en la base de datos".format(pelicula)
+
+
+
+    if (pelis['title']==pelicula).any():
+        pelis = pelis[pelis['title']==pelicula]
+        duracion = pelis['runtime'].tolist()
+        anios = pelis['release_year'].tolist()
+
+  
+        data = {
+            'titulo':pelicula,
+            'anio': anios, 
+            'duración': duracion}
+        
+    else:
+        data = {mensaje}
+
+    return data
+
+# --------------------------------
+
+# 3. función franquicia
+
+@app.get('/franquicia/{franquicia}')
+def franquicia(franquicia:str):
+    '''Se ingresa la franquicia, retornando la cantidad de peliculas, ganancia total y promedio'''
+    franquicia = franquicia.title().strip()
+    cantidad = collections[collections.name_collection == franquicia].shape[0]
+
+    if cantidad == 0:
+        out = {f'La franquicia "{franquicia}" no se encuentra en nuestra base de datos. Intente nuevamente.'}
+
+    else:
+        ganancia_total = int(collections.revenue[collections.name_collection == franquicia].sum())
+        ganancia_promedio = ganancia_total/cantidad
+        out = {'franquicia':franquicia, 'cantidad':cantidad, 'ganancia_total':ganancia_total, 'ganancia_promedio':ganancia_promedio}
+
+    return out
