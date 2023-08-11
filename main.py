@@ -14,7 +14,7 @@ collections = pd.read_csv('data/collections.csv',low_memory=False)
 directors = pd.read_csv("data/directors.csv", sep=",")
 production_countries = pd.read_csv("data/movies_production_countries.csv", sep=",")
 movies_production_companies = pd.read_csv("data/movies_production_companies.csv", sep=",")
-sist_recomendacion_df = pd.read_csv("data/sist_recomendacion_df.csv", sep=",")
+sist_recomendacion_df = pd.read_csv("data/ml_df.csv", sep=",")
 
 
 # 1. función peliculas_idioma
