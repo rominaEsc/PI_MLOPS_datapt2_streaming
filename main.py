@@ -75,3 +75,77 @@ def franquicia(franquicia:str):
         out = {'franquicia':franquicia, 'cantidad':cantidad, 'ganancia_total':ganancia_total, 'ganancia_promedio':ganancia_promedio}
 
     return out
+
+# --------------------------------
+
+# 4. función peliculas_pais
+
+@app.get('/peliculas_pais/{pais}')
+def peliculas_pais(pais:str):
+    '''Ingresas el pais, retornando la cantidad de peliculas producidas en el mismo'''
+    pais = pais.upper()
+    cantidad =  int(production_countries.id_production_countries[production_countries.id_production_countries == pais].count())
+    
+    return {'pais':pais, 'cantidad':cantidad}
+
+# --------------------------------
+
+# 5. función productoras_exitosas
+
+@app.get('/productoras_exitosas/{productora}')
+def productoras_exitosas(productora:str):
+    '''Ingresas la productora, entregandote el revunue total y la cantidad de peliculas que realizo '''
+    productora = productora.title().strip()
+
+    df = movies_production_companies[movies_production_companies.name_production_companies == productora]
+
+    revenue_total = int(df.revenue.sum())
+    cantidad = int(df.revenue.count())
+
+    return {'productora':productora, 'revenue_total': revenue_total,'cantidad':cantidad}
+
+# --------------------------------
+
+# 6. funcion get_director
+
+@app.get('/get_director/{nombre_director}')
+def get_director( nombre_director ): 
+    ''' Se ingresa el nombre de un director que se encuentre dentro de un dataset debiendo devolver el éxito del mismo medido a través del retorno. 
+    A demás, deberá devolver el nombre de cada película con la fecha de lanzamiento, retorno individual, costo y ganancia de la misma.'''
+       
+    nombre_director = nombre_director.title().strip()
+    
+    existe = directors[directors.name == nombre_director].shape[0]
+
+    if existe == 0:
+        data = {f'No se encontraron directores con el nombre {nombre_director}.'}
+
+    else:
+   
+        id_director = directors[directors.name == nombre_director].iloc[0,0]
+
+        df = (
+            pd.merge(
+                directors[directors['id_director'] == id_director],
+                movies[['id_movie','title','release_year','revenue','budget','return']],
+                on='id_movie', 
+                how='inner')
+        )
+        
+        retorno_total_director = df['return'].sum()
+        peliculas = df['title'].tolist()
+        anios = df['release_year'].tolist()
+        retorno_peliculas = df['return'].tolist()
+        budget_peliculas = df['budget'].tolist()
+        revenue_peliculas = df['revenue'].tolist()
+
+        data = {
+            'director':nombre_director, 
+            'retorno_total_director':retorno_total_director, 
+            'peliculas':peliculas, 
+            'anio':anios, 
+            'retorno_pelicula':retorno_peliculas, 
+            'budget_pelicula':budget_peliculas, 
+            'revenue_pelicula':revenue_peliculas}
+
+    return data
