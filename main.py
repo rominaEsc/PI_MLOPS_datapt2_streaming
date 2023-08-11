@@ -155,7 +155,7 @@ def get_director( nombre_director ):
 
 
 # ML
-# @app.get('/recomendacion/{titulo}')
+@app.get('/recomendacion/{titulo}')
 def recomendacion(titulo:str):
     '''Ingresas un nombre de pelicula y te recomienda las similares en una lista'''
     if df['title'].str.contains(titulo).any():
