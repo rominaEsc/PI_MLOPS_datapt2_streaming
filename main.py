@@ -22,6 +22,7 @@ movies_production_companies = pd.read_csv("data/movies_production_companies.csv"
 def peliculas_idioma(idioma:str):
 
     idioma = idioma.lower().strip()
-    respuesta = (original_language.original_language ==idioma).shape[0]
+    respuesta = (original_language[original_language.original_language == idioma]).shape[0]
 
     return {'idioma':idioma, 'cantidad':respuesta}
+
