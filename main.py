@@ -14,6 +14,7 @@ collections = pd.read_csv('data/collections.csv',low_memory=False)
 directors = pd.read_csv("data/directors.csv", sep=",")
 production_countries = pd.read_csv("data/movies_production_countries.csv", sep=",")
 movies_production_companies = pd.read_csv("data/movies_production_companies.csv", sep=",")
+sist_recomendacion_df = pd.read_csv("data/sist_recomendacion_df.csv", sep=",")
 
 
 # 1. función peliculas_idioma
@@ -163,18 +164,18 @@ stopwords = STOPWORDS
 tf = TfidfVectorizer(stop_words='english')
 
 # calculamos los features para cada ítem (texto)
-tfidf_matrix = tf.fit_transform(df['text'])
+tfidf_matrix = tf.fit_transform(sist_recomendacion_df['text'])
 
 # calculamos las similitudes entre todos los documentos
 cosine_similarities = linear_kernel(tfidf_matrix, tfidf_matrix)
 n = 5
 
 results = {} 
-for idx, row in df.iterrows():
+for idx, row in sist_recomendacion_df.iterrows():
     # guardamos los indices similares basados en la similitud coseno. Los ordenamos en modo ascendente, siendo 0 nada de similitud y 1 total
     similar_indices = cosine_similarities[idx].argsort()[:-n-2:-1] 
     # guardamos los N más cercanos
-    similar_items = [(f"{df.loc[i, 'title']}") for i in similar_indices]
+    similar_items = [(f"{sist_recomendacion_df.loc[i, 'title']}") for i in similar_indices]
     results[f"{row['title']}"] = similar_items[1:]
 
 
@@ -184,7 +185,7 @@ def recomendacion(titulo:str):
     '''Ingresas un nombre de pelicula y te recomienda las similares en una lista'''
     titulo = titulo.title().strip()
 
-    if df['title'].str.contains(titulo).any():
+    if sist_recomendacion_df['title'].str.contains(titulo).any():
         titulo = titulo.title().strip()
         lista = (results[titulo])
         data = {'titulo':titulo , 'lista recomendada': lista}
